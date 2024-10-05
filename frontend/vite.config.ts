@@ -9,7 +9,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./vitest.setup.ts"],
+    setupFiles: ["./vitest.setup.ts", "./tests/setupTests.ts"],
     exclude: [...configDefaults.exclude, "**/e2e/**"],
   },
 });
