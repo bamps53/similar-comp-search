@@ -1,5 +1,8 @@
 // src/components/Pagination.tsx
-import React from 'react';
+
+import React from "react";
+import { Button, ButtonGroup, IconButton } from "@chakra-ui/react";
+import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 
 interface PaginationProps {
   currentPage: number;
@@ -25,32 +28,31 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <div>
-      <button
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
+    <ButtonGroup mt={4} spacing={2}>
+      <IconButton
         aria-label="前へ"
-      >
-        前へ
-      </button>
+        icon={<ArrowLeftIcon />}
+        onClick={() => handlePageChange(currentPage - 1)}
+        isDisabled={currentPage === 1}
+      />
       {pageNumbers.map((number) => (
-        <button
+        <Button
           key={number}
           onClick={() => handlePageChange(number)}
-          className={number === currentPage ? 'active' : ''}
-          aria-label={number.toString()}
+          variant={number === currentPage ? "solid" : "outline"}
+          colorScheme={number === currentPage ? "teal" : "gray"}
+          aria-current={number === currentPage ? "page" : undefined} // ここを追加
         >
           {number}
-        </button>
+        </Button>
       ))}
-      <button
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+      <IconButton
         aria-label="次へ"
-      >
-        次へ
-      </button>
-    </div>
+        icon={<ArrowRightIcon />}
+        onClick={() => handlePageChange(currentPage + 1)}
+        isDisabled={currentPage === totalPages}
+      />
+    </ButtonGroup>
   );
 };
 

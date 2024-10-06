@@ -1,32 +1,30 @@
 // tests/components/SearchResults.test.tsx
-import { render, screen, waitFor } from '@testing-library/react';
-import SearchResults from '../../src/components/SearchResults';
-import { server, http } from '../setupTests';
+import { render, screen } from "@testing-library/react";
+import SearchResults from "../../src/components/SearchResults";
+import { ResultItem } from "../../src/pages/Home";
 
-describe('SearchResults Component with API', () => {
-  test('should fetch and render results from API', async () => {
-    render(<SearchResults />);
+describe("SearchResults Component", () => {
+  const mockResults: ResultItem[] = [
+    { id: 1, title: "First Competition", domain: "NLP" },
+    { id: 2, title: "Second Competition", domain: "Computer Vision" },
+  ];
 
-    await waitFor(() => {
-      expect(screen.getByText('First Competition')).toBeInTheDocument();
-    });
+  test("should display spinner when loading", () => {
+    render(<SearchResults results={[]} isLoading={true} />);
 
-    expect(screen.getByText('Second Competition')).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  test('should handle API errors', async () => {
-    server.use(
-      http.get('/api/competitions/search', (req, res, ctx) => {
-        return res(ctx.status(500));
-      })
-    );
+  test("should display '結果が見つかりませんでした' when results are empty", () => {
+    render(<SearchResults results={[]} isLoading={false} />);
 
-    render(<SearchResults />);
+    expect(screen.getByText("結果が見つかりませんでした")).toBeInTheDocument();
+  });
 
-    await waitFor(() => {
-      expect(
-        screen.getByText('データの取得に失敗しました')
-      ).toBeInTheDocument();
-    });
+  test("should render results when provided", () => {
+    render(<SearchResults results={mockResults} isLoading={false} />);
+
+    expect(screen.getByText("First Competition")).toBeInTheDocument();
+    expect(screen.getByText("Second Competition")).toBeInTheDocument();
   });
 });

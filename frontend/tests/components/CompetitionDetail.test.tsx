@@ -1,26 +1,28 @@
 // tests/components/CompetitionDetail.test.tsx
-import { render, screen, waitFor } from '@testing-library/react';
-import CompetitionDetail from '../../src/components/CompetitionDetail';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { render, screen, waitFor } from "@testing-library/react";
+import CompetitionDetail from "../../src/pages/CompetitionDetail";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-describe('CompetitionDetail Component', () => {
-  test('should render competition details correctly', async () => {
+describe("CompetitionDetail Component", () => {
+  test("should render competition details correctly", async () => {
     render(
-      <MemoryRouter initialEntries={['/competitions/1']}>
+      <MemoryRouter initialEntries={["/competitions/1"]}>
         <Routes>
           <Route path="/competitions/:id" element={<CompetitionDetail />} />
         </Routes>
       </MemoryRouter>
     );
 
-    expect(await screen.findByText('First Competition')).toBeInTheDocument();
-    expect(await screen.findByText('This is a test competition')).toBeInTheDocument();
-    expect(await screen.findByText('NLP')).toBeInTheDocument();
+    expect(await screen.findByText("First Competition")).toBeInTheDocument();
+    expect(
+      await screen.findByText("This is a test competition")
+    ).toBeInTheDocument();
+    expect(await screen.findByText("ドメイン: NLP")).toBeInTheDocument();
   });
 
-  test('should display error message for invalid ID', async () => {
+  test("should display error message for invalid ID", async () => {
     render(
-      <MemoryRouter initialEntries={['/competitions/999']}>
+      <MemoryRouter initialEntries={["/competitions/999"]}>
         <Routes>
           <Route path="/competitions/:id" element={<CompetitionDetail />} />
         </Routes>
@@ -29,7 +31,7 @@ describe('CompetitionDetail Component', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('コンペティションが見つかりませんでした')
+        screen.getByText("コンペティションが見つかりませんでした")
       ).toBeInTheDocument();
     });
   });

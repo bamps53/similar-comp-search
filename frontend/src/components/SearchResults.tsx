@@ -1,47 +1,52 @@
-// src/components/SearchResults.tsx
-import React, { useEffect, useState } from 'react';
+// components/SearchResults/SearchResults.tsx
+import React from "react";
+import { Box, Text, Grid, GridItem, Spinner, Center } from "@chakra-ui/react";
+import { ResultItem } from "../pages/Home";
 
-interface ResultItem {
-  id: number;
-  title: string;
-  domain: string;
-  // 他のフィールド
+export interface SearchResultsProps {
+  results: ResultItem[];
+  isLoading: boolean;
 }
 
-const SearchResults: React.FC = () => {
-  const [results, setResults] = useState<ResultItem[]>([]);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    fetch('/api/competitions/search')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then((data) => setResults(data))
-      .catch((error) => setError('データの取得に失敗しました'));
-  }, []);
-
-  if (error) {
-    return <div>{error}</div>;
+const SearchResults: React.FC<SearchResultsProps> = ({
+  results,
+  isLoading,
+}) => {
+  if (isLoading) {
+    return (
+      <Center>
+        <Spinner size="xl" />
+      </Center>
+    );
   }
 
   if (results.length === 0) {
-    return <div>結果が見つかりませんでした</div>;
+    return (
+      <Box p={4}>
+        <Text>結果が見つかりませんでした</Text>
+      </Box>
+    );
   }
 
   return (
-    <ul>
+    <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6} p={4}>
       {results.map((item) => (
-        <li key={item.id}>
-          <h3>{item.title}</h3>
-          <p>{item.domain}</p>
+        <GridItem
+          key={item.id}
+          w="100%"
+          bg="white"
+          shadow="md"
+          borderRadius="md"
+          p={4}
+        >
+          <Text fontSize="xl" fontWeight="bold">
+            {item.title}
+          </Text>
+          <Text>{item.domain}</Text>
           {/* 他の情報 */}
-        </li>
+        </GridItem>
       ))}
-    </ul>
+    </Grid>
   );
 };
 

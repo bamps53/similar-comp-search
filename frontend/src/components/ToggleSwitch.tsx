@@ -1,12 +1,13 @@
-// src/components/ToggleSwitch.tsx
-import React, { useState } from 'react';
+// components/ToggleSwitch/ToggleSwitch.tsx
+import React from "react";
+import { Switch, FormControl, FormLabel } from "@chakra-ui/react";
 
 interface ToggleSwitchProps {
   onToggle: (isSolution: boolean) => void;
 }
 
 const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ onToggle }) => {
-  const [isSolution, setIsSolution] = useState(false);
+  const [isSolution, setIsSolution] = React.useState(false);
 
   const handleToggle = () => {
     setIsSolution(!isSolution);
@@ -14,15 +15,17 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ onToggle }) => {
   };
 
   return (
-    <label>
-      <input
-        type="checkbox"
-        role="checkbox"
-        checked={isSolution}
+    <FormControl display="flex" alignItems="center">
+      <FormLabel htmlFor="toggle-search" mb="0">
+        {isSolution ? "ソリューション検索" : "コンペ検索"}
+      </FormLabel>
+      <Switch
+        id="toggle-search"
+        isChecked={isSolution}
         onChange={handleToggle}
+        colorScheme="teal"
       />
-      {isSolution ? 'ソリューション検索' : 'コンペ検索'}
-    </label>
+    </FormControl>
   );
 };
 

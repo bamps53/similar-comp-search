@@ -22,7 +22,7 @@ describe('App Routing', () => {
     );
 
     // 最初に「読み込み中...」が表示されていることを確認
-    expect(screen.getByText('読み込み中...')).toBeInTheDocument();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
 
     // 非同期の状態更新を待機し、データが表示されることを確認
     expect(await screen.findByText('First Competition')).toBeInTheDocument();
