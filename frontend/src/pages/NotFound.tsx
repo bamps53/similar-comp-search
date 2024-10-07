@@ -1,4 +1,4 @@
-// src/components/NotFound.tsx
+// src/pages/NotFound.tsx
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Heading, Text, Button } from "@chakra-ui/react";

@@ -1,4 +1,4 @@
-// components/ToggleSwitch/ToggleSwitch.tsx
+// src/components/ToggleSwitch.tsx
 import React from "react";
 import { Switch, FormControl, FormLabel } from "@chakra-ui/react";
 

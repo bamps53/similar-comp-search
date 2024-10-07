@@ -1,4 +1,4 @@
-// src/components/common/Footer/Footer.tsx
+// src/components/Footer.tsx
 import React from "react";
 import { Box, Text, Link, Stack } from "@chakra-ui/react";
 

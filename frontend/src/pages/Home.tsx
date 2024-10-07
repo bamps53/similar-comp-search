@@ -1,4 +1,4 @@
-// src/components/Home.tsx
+// src/pages/Home.tsx
 import React, { useState } from "react";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";

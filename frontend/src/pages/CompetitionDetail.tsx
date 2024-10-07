@@ -1,4 +1,4 @@
-// src/components/CompetitionDetail.tsx
+// src/pages/CompetitionDetail.tsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Heading, Text, Spinner, Center, VStack } from "@chakra-ui/react";
