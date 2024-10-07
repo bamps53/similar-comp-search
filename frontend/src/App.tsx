@@ -1,13 +1,13 @@
 // src/App.tsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
 import Home from "./pages/Home";
 import CompetitionDetail from "./pages/CompetitionDetail";
 import SolutionDetail from "./pages/SolutionDetail";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Box } from "@chakra-ui/react";
 
 const App: React.FC = () => {
   return (

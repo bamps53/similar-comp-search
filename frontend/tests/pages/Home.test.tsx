@@ -1,6 +1,7 @@
-// tests/components/Home.test.tsx
+// tests/pages/Home.test.tsx
 import { render, screen } from "@testing-library/react";
 import Home from "../../src/pages/Home";
+import { vi } from "vitest";
 
 describe("Home Component", () => {
   test("should render welcome message", () => {
@@ -14,9 +15,7 @@ describe("Home Component", () => {
   test("should render SearchBar component", () => {
     render(<Home />);
 
-    expect(
-      screen.getByPlaceholderText("検索キーワードを入力")
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText("検索キーワード入力")).toBeInTheDocument();
   });
 
   test("should render ToggleSwitch component", () => {

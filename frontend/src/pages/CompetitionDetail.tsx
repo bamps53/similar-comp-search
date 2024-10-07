@@ -1,37 +1,19 @@
 // src/pages/CompetitionDetail.tsx
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { Box, Heading, Text, Spinner, Center, VStack } from "@chakra-ui/react";
-
-interface Competition {
-  id: number;
-  title: string;
-  subtitle: string;
-  domain: string;
-  // 他のフィールド
-}
+import { useCompetitionDetail } from "../hooks/useCompetitionDetail";
 
 const CompetitionDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [competition, setCompetition] = useState<Competition | null>(null);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    fetch(`/api/competitions/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Competition not found");
-        }
-        return res.json();
-      })
-      .then((data) => setCompetition(data))
-      .catch(() => setError("コンペティションが見つかりませんでした"));
-  }, [id]);
+  const { competition, error } = useCompetitionDetail(id);
 
   if (error) {
     return (
       <Center>
-        <Text color="red.500">{error}</Text>
+        <Text color="red.500" aria-label="エラーメッセージ">
+          {error}
+        </Text>
       </Center>
     );
   }
@@ -39,7 +21,7 @@ const CompetitionDetail: React.FC = () => {
   if (!competition) {
     return (
       <Center>
-        <Spinner size="xl" />
+        <Spinner size="xl" aria-label="読み込み中" />
       </Center>
     );
   }
@@ -47,9 +29,11 @@ const CompetitionDetail: React.FC = () => {
   return (
     <Box p={6}>
       <VStack align="start" spacing={4}>
-        <Heading>{competition.title}</Heading>
-        <Text fontSize="lg">{competition.subtitle}</Text>
-        <Text>ドメイン: {competition.domain}</Text>
+        <Heading aria-label="コンペタイトル">{competition.title}</Heading>
+        <Text fontSize="lg" aria-label="コンペサブタイトル">
+          {competition.subtitle}
+        </Text>
+        <Text aria-label="ドメイン">ドメイン: {competition.domain}</Text>
         {/* 他の情報を表示 */}
       </VStack>
     </Box>

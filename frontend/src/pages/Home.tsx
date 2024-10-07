@@ -4,6 +4,7 @@ import { Box, Heading, VStack } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import ToggleSwitch from "../components/ToggleSwitch";
 import SearchResults from "../components/SearchResults";
+import { useSearch } from "../hooks/useSearch";
 
 export interface ResultItem {
   id: number;
@@ -14,12 +15,10 @@ export interface ResultItem {
 
 const Home: React.FC = () => {
   const [isSolutionSearch, setIsSolutionSearch] = useState(false);
-  const [results, setResults] = useState<ResultItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { results, isLoading, handleSearch } = useSearch(isSolutionSearch);
 
   const handleToggle = (isSolution: boolean) => {
     setIsSolutionSearch(isSolution);
-    console.log(isSolutionSearch); // TODO: ここに処理を追加
   };
 
   return (
@@ -27,7 +26,7 @@ const Home: React.FC = () => {
       <VStack spacing={6} align="stretch">
         <Heading textAlign="center">ようこそ、類似コンペ検索サイトへ</Heading>
         <ToggleSwitch onToggle={handleToggle} />
-        <SearchBar setIsLoading={setIsLoading} setResults={setResults} />
+        <SearchBar onSearch={handleSearch} />
         <SearchResults results={results} isLoading={isLoading} />
       </VStack>
     </Box>
