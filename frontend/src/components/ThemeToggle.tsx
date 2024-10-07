@@ -8,7 +8,11 @@ const ThemeToggle: React.FC = () => {
 
   return (
     <IconButton
-      aria-label="テーマ切り替え"
+      aria-label={
+        colorMode === "light"
+          ? "ダークモードに切り替え"
+          : "ライトモードに切り替え"
+      }
       icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
       onClick={toggleColorMode}
       variant="ghost"

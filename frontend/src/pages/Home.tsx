@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import SearchBar from "../components/SearchBar";
 import ToggleSwitch from "../components/ToggleSwitch";
-import SearchResults from "../components/SearchResults";
+import SearchResults from "../components/SearchResults/SearchResults";
 import { useSearch } from "../hooks/useSearch";
 
 export interface ResultItem {

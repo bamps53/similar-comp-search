@@ -6,8 +6,8 @@ import Home from "./pages/Home";
 import CompetitionDetail from "./pages/CompetitionDetail";
 import SolutionDetail from "./pages/SolutionDetail";
 import NotFound from "./pages/NotFound";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 const App: React.FC = () => {
   return (

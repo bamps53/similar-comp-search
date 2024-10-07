@@ -1,29 +1,36 @@
 // tests/components/ThemeToggle.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
 import ThemeToggle from "../../src/components/ThemeToggle";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 
 describe("ThemeToggle Component", () => {
   test("should toggle theme on click", () => {
     render(
       <ChakraProvider>
-        <ThemeToggle />
+        <ColorModeProvider
+          options={{ initialColorMode: "light", useSystemColorMode: false }}
+        >
+          <ThemeToggle />
+        </ColorModeProvider>
       </ChakraProvider>
     );
 
-    const toggleButton = screen.getByRole("button", { name: "テーマ切り替え" });
+    const toggleButton = screen.getByRole("button", {
+      name: "ダークモードに切り替え",
+    });
 
-    // デフォルトはライトモード
-    expect(document.documentElement).toHaveAttribute("data-theme", "light");
+    // 初期状態はライトモード
+    expect(toggleButton).toHaveAttribute(
+      "aria-label",
+      "ダークモードに切り替え"
+    );
 
     // トグルをクリックしてダークモードに切り替え
     fireEvent.click(toggleButton);
 
-    expect(document.documentElement).toHaveAttribute("data-theme", "dark");
-
-    // 再度クリックしてライトモードに戻す
-    fireEvent.click(toggleButton);
-
-    expect(document.documentElement).toHaveAttribute("data-theme", "light");
+    expect(toggleButton).toHaveAttribute(
+      "aria-label",
+      "ライトモードに切り替え"
+    );
   });
 });

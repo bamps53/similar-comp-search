@@ -1,7 +1,6 @@
 // tests/components/Pagination.test.tsx
-
 import { render, screen, fireEvent } from "@testing-library/react";
-import Pagination from "../../src/components/Pagination";
+import Pagination from "../../src/components/Pagination/Pagination";
 import { vi } from "vitest";
 
 describe("Pagination Component", () => {
@@ -17,11 +16,11 @@ describe("Pagination Component", () => {
     );
 
     // 現在のページが強調表示されていることを確認
-    const currentPageButton = screen.getByRole("button", { name: "2" });
+    const currentPageButton = screen.getByRole("button", { name: "ページ 2" });
     expect(currentPageButton).toHaveAttribute("aria-current", "page");
 
     // 全体のページ数が正しく表示されていることを確認
-    expect(screen.getAllByRole("button")).toHaveLength(7); // 5ページ + 前へ + 次へ
+    expect(screen.getAllByRole("button")).toHaveLength(7); // 5ページ + 前のページへ + 次のページへ
   });
 
   test("should call onPageChange when page number is clicked", () => {
@@ -33,7 +32,7 @@ describe("Pagination Component", () => {
       />
     );
 
-    const pageButton = screen.getByRole("button", { name: "2" });
+    const pageButton = screen.getByRole("button", { name: "ページ 2" });
     fireEvent.click(pageButton);
 
     expect(onPageChangeMock).toHaveBeenCalledWith(2);
@@ -48,7 +47,7 @@ describe("Pagination Component", () => {
       />
     );
 
-    const prevButton = screen.getByRole("button", { name: "前へ" });
+    const prevButton = screen.getByRole("button", { name: "前のページへ" });
     expect(prevButton).toBeDisabled();
   });
 
@@ -61,7 +60,7 @@ describe("Pagination Component", () => {
       />
     );
 
-    const nextButton = screen.getByRole("button", { name: "次へ" });
+    const nextButton = screen.getByRole("button", { name: "次のページへ" });
     expect(nextButton).toBeDisabled();
   });
 });
