@@ -1,6 +1,8 @@
 // src/hooks/useSearch.ts
-import { useState } from "react";
-import { ResultItem } from "../pages/Home";
+
+import { useState } from 'react';
+import { ResultItem } from '../pages/Home';
+import apiClient from '../utils/apiClient';
 
 export interface SearchParams {
   keyword: string;
@@ -16,24 +18,12 @@ export const useSearch = (isSolutionSearch: boolean) => {
     setIsLoading(true);
     try {
       const endpoint = isSolutionSearch
-        ? "/api/solutions/search"
-        : "/api/competitions/search";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(params),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setResults(data);
+        ? '/api/solutions/search'
+        : '/api/competitions/search';
+      const response = await apiClient.get(endpoint, params);
+      setResults(response.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
       // エラーハンドリングを追加できます
     } finally {
       setIsLoading(false);

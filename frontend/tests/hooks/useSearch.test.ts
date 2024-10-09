@@ -1,22 +1,21 @@
 // tests/hooks/useSearch.test.ts
 import { renderHook, act } from "@testing-library/react";
 import { useSearch } from "../../src/hooks/useSearch";
-import { vi } from "vitest";
+import { Mock, vi } from "vitest";
+import apiClient from "../../src/utils/apiClient";
+
+vi.mock("../../src/utils/apiClient");
 
 describe("useSearch Hook", () => {
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   test("should fetch and update results correctly for competitions", async () => {
     const mockData = [{ id: 1, title: "Test Competition" }];
 
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockData),
-      })
-    );
+    // axios のモック設定
+    (apiClient.get as Mock).mockResolvedValue({ data: mockData });
 
     const { result } = renderHook(() => useSearch(false));
 
@@ -28,16 +27,10 @@ describe("useSearch Hook", () => {
       });
     });
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/competitions/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        keyword: "test",
-        filter: "",
-        similarity: "",
-      }),
+    expect(apiClient.get).toHaveBeenCalledWith("/api/competitions/search", {
+      keyword: "test",
+      filter: "",
+      similarity: "",
     });
 
     expect(result.current.results).toEqual(mockData);
@@ -47,12 +40,8 @@ describe("useSearch Hook", () => {
   test("should fetch and update results correctly for solutions", async () => {
     const mockData = [{ id: 1, title: "Test Solution" }];
 
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockData),
-      })
-    );
+    // apiClient のモック設定
+    (apiClient.get as Mock).mockResolvedValue({ data: mockData });
 
     const { result } = renderHook(() => useSearch(true));
 
@@ -64,16 +53,10 @@ describe("useSearch Hook", () => {
       });
     });
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/solutions/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        keyword: "test",
-        filter: "",
-        similarity: "",
-      }),
+    expect(apiClient.get).toHaveBeenCalledWith("/api/solutions/search", {
+      keyword: "test",
+      filter: "",
+      similarity: "",
     });
 
     expect(result.current.results).toEqual(mockData);

@@ -1,12 +1,15 @@
 // tests/pages/SolutionDetail.test.tsx
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import SolutionDetail from "../../src/pages/SolutionDetail";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { vi } from "vitest";
+import { vi, Mock } from "vitest";
+import apiClient from "../../src/utils/apiClient";
+
+vi.mock("../../src/utils/apiClient");
 
 describe("SolutionDetail Component", () => {
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   test("should render solution details correctly", async () => {
@@ -17,12 +20,8 @@ describe("SolutionDetail Component", () => {
       repository_link: "http://example.com/repo",
     };
 
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockData),
-      })
-    );
+    // apiClient のモック設定
+    (apiClient.get as Mock).mockResolvedValue({ data: mockData });
 
     render(
       <MemoryRouter initialEntries={["/solutions/1"]}>
@@ -46,11 +45,8 @@ describe("SolutionDetail Component", () => {
   });
 
   test("should display error message for invalid ID", async () => {
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-      })
-    );
+    // apiClient のモック設定（エラーをスロー）
+    (apiClient.get as Mock).mockRejectedValue(new Error("Solution not found"));
 
     render(
       <MemoryRouter initialEntries={["/solutions/999"]}>

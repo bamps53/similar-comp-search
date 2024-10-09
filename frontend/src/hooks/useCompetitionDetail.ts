@@ -1,5 +1,6 @@
 // src/hooks/useCompetitionDetail.ts
 import { useState, useEffect } from "react";
+import apiClient from "../utils/apiClient";
 
 interface Competition {
   id: number;
@@ -21,12 +22,8 @@ export const useCompetitionDetail = (id: string | undefined) => {
 
     const fetchCompetition = async () => {
       try {
-        const res = await fetch(`/api/competitions/${id}`);
-        if (!res.ok) {
-          throw new Error("Competition not found");
-        }
-        const data = await res.json();
-        setCompetition(data);
+        const response = await apiClient.get(`/api/competitions/${id}`);
+        setCompetition(response.data);
       } catch {
         setError("コンペティションが見つかりませんでした");
       }

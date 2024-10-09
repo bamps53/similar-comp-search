@@ -1,11 +1,14 @@
 // tests/hooks/useSolutionDetail.test.ts
 import { renderHook, act } from "@testing-library/react";
 import { useSolutionDetail } from "../../src/hooks/useSolutionDetail";
-import { vi } from "vitest";
+import apiClient from "../../src/utils/apiClient";
+import { vi, Mock } from "vitest";
+
+vi.mock("../../src/utils/apiClient");
 
 describe("useSolutionDetail Hook", () => {
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   test("should fetch and return solution data", async () => {
@@ -16,12 +19,8 @@ describe("useSolutionDetail Hook", () => {
       repository_link: "http://example.com/repo",
     };
 
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockData),
-      })
-    );
+    // apiClient のモック設定
+    (apiClient.get as Mock).mockResolvedValue({ data: mockData });
 
     const { result } = renderHook(() => useSolutionDetail("1"));
 
@@ -29,17 +28,15 @@ describe("useSolutionDetail Hook", () => {
       // フック内の useEffect を待機
     });
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/solutions/1");
+    expect(apiClient.get).toHaveBeenCalledWith("/api/solutions/1");
+
     expect(result.current.solution).toEqual(mockData);
     expect(result.current.error).toBe("");
   });
 
   test("should handle error when solution not found", async () => {
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-      })
-    );
+    // apiClient のモック設定（エラーをスロー）
+    (apiClient.get as Mock).mockRejectedValue(new Error("Solution not found"));
 
     const { result } = renderHook(() => useSolutionDetail("999"));
 
@@ -47,7 +44,7 @@ describe("useSolutionDetail Hook", () => {
       // フック内の useEffect を待機
     });
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/solutions/999");
+    expect(apiClient.get).toHaveBeenCalledWith("/api/solutions/999");
     expect(result.current.solution).toBeNull();
     expect(result.current.error).toBe("ソリューションが見つかりませんでした");
   });

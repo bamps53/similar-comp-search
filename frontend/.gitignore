@@ -27,3 +27,5 @@ blob-report/
 playwright/.cache/
 test-results/
 coverage/
+
+.env
